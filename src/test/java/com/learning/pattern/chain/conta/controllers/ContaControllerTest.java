@@ -3,7 +3,7 @@ package com.learning.pattern.chain.conta.controllers;
 import org.testng.annotations.Test;
 
 import com.learning.pattern.chain.conta.models.Conta;
-import com.learning.pattern.chain.conta.models.Formato;
+import com.learning.pattern.chain.conta.models.Format;
 
 public class ContaControllerTest {
     
@@ -11,20 +11,20 @@ public class ContaControllerTest {
     public void deveImprimirXml(){
 	ContaController controller = new ContaController();
 	Conta conta = new Conta("Karina", 1.0);
-	controller.imprimeConta(Formato.XML, conta);
+	controller.imprimeConta(Format.XML, conta);
     }
     
     @Test
     public void deveImprimirCsv(){
 	ContaController controller = new ContaController();
 	Conta conta = new Conta("Karina", 1.0);
-	controller.imprimeConta(Formato.CSV, conta);
+	controller.imprimeConta(Format.CSV, conta);
     }
     
     @Test
     public void deveImprimirPorcento(){
 	ContaController controller = new ContaController();
 	Conta conta = new Conta("Karina", 1.0);
-	controller.imprimeConta(Formato.PORCENTO, conta);
+	controller.imprimeConta(Format.PORCENTO, conta);
     }
 }

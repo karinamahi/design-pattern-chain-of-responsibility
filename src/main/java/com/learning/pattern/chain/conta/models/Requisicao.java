@@ -2,14 +2,14 @@ package com.learning.pattern.chain.conta.models;
 
 public class Requisicao {
 
-    private Formato formato;
+    private Format format;
 
-    public Requisicao(Formato formato) {
+    public Requisicao(Format format) {
 	super();
-	this.formato = formato;
+	this.format = format;
     }
 
-    public Formato getFormato() {
-        return formato;
+    public Format getFormato() {
+        return format;
     }
 }
