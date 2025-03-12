@@ -25,6 +25,6 @@ public class ContaControllerTest {
     public void deveImprimirPorcento(){
 	ContaController controller = new ContaController();
 	Conta conta = new Conta("Karina", 1.0);
-	controller.imprimeConta(Format.PORCENTO, conta);
+	controller.imprimeConta(Format.PERCENT, conta);
     }
 }

@@ -16,7 +16,7 @@ public class RespostaEmPorcento implements Resposta{
 
     @Override
     public void responde(Requisicao requisicao, Conta conta) {
-	if(requisicao.getFormato().equals(Format.PORCENTO)){
+	if(requisicao.getFormato().equals(Format.PERCENT)){
 	    System.out.println(conta.getTitular() + "%" + conta.getSaldo());
 	}else{
 	    outraResposta.responde(requisicao, conta);
