@@ -5,11 +5,11 @@ import com.learning.pattern.chain.desconto.impl.DescontoPorMaisDeCincoItens;
 import com.learning.pattern.chain.desconto.impl.DescontoPorMaisDeQuinhentosReais;
 import com.learning.pattern.chain.desconto.impl.DescontoPorVendaCasada;
 import com.learning.pattern.chain.desconto.impl.SemDesconto;
-import com.learning.pattern.chain.desconto.models.Orcamento;
+import com.learning.pattern.chain.desconto.models.PriceEstimate;
 
 public class CalculadorDeDescontos {
 
-    public double calcula(Orcamento orcamento) {
+    public double calcula(PriceEstimate priceEstimate) {
 	Desconto d1 = new DescontoPorMaisDeCincoItens();
 	Desconto d2 = new DescontoPorMaisDeQuinhentosReais();
 	Desconto d3 = new DescontoPorVendaCasada();
@@ -19,7 +19,7 @@ public class CalculadorDeDescontos {
 	d2.setDesconto(d3);
 	d3.setDesconto(d4);
 
-	return d1.desconta(orcamento);
+	return d1.desconta(priceEstimate);
     }
 
 }

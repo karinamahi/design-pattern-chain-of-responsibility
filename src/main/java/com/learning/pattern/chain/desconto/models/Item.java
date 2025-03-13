@@ -2,21 +2,20 @@ package com.learning.pattern.chain.desconto.models;
 
 public class Item {
 
-    private String nome;
-    private double valor;
-    
-    public Item(String nome, double valor) {
-	super();
-	this.nome = nome;
-	this.valor = valor;
+    private String name;
+    private double price;
+
+    public Item(String name, double price) {
+        super();
+        this.name = name;
+        this.price = price;
     }
-    
-    public String getNome() {
-        return nome;
+
+    public String getName() {
+        return name;
     }
-    public double getValor() {
-        return valor;
+
+    public double getPrice() {
+        return price;
     }
-    
-    
 }
