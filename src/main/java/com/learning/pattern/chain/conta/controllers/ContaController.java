@@ -7,7 +7,7 @@ import com.learning.pattern.chain.conta.resposta.Response;
 import com.learning.pattern.chain.conta.resposta.impl.ErrorResponse;
 import com.learning.pattern.chain.conta.resposta.impl.CsvResponse;
 import com.learning.pattern.chain.conta.resposta.impl.PercentResponse;
-import com.learning.pattern.chain.conta.resposta.impl.RespostaEmXml;
+import com.learning.pattern.chain.conta.resposta.impl.XmlResponse;
 
 public class ContaController {
     
@@ -16,7 +16,7 @@ public class ContaController {
 	Response erro = new ErrorResponse();
 	Response porcento = new PercentResponse(erro);
 	Response csv = new CsvResponse(porcento);
-	Response xml = new RespostaEmXml(csv);
+	Response xml = new XmlResponse(csv);
 	
 	Request request = new Request(format);
 	xml.reply(request, account);
