@@ -17,7 +17,7 @@ public class RespostaEmCsv implements Resposta{
     @Override
     public void responde(Request request, Account account) {
 	if(request.getFormat().equals(Format.CSV)){
-	    System.out.println(account.getTitular() + "," + account.getSaldo());
+	    System.out.println(account.getOwner() + "," + account.getBalance());
 	}else{
 	    outraResposta.responde(request, account);
 	}

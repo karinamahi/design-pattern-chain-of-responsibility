@@ -17,7 +17,7 @@ public class RespostaEmXml implements Resposta{
     @Override
     public void responde(Request request, Account account) {
 	if(request.getFormat().equals(Format.XML)){
-	    System.out.println("<conta><titular>" + account.getTitular() + "</titular><saldo>" + account.getSaldo() + "</saldo></conta>");
+	    System.out.println("<conta><titular>" + account.getOwner() + "</titular><saldo>" + account.getBalance() + "</saldo></conta>");
 	}else{
 	    outraResposta.responde(request, account);
 	}

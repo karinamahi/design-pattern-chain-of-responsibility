@@ -2,24 +2,24 @@ package com.learning.pattern.chain.conta.models;
 
 public class Account {
 
-    private String titular;
-    private double saldo;
+    private String owner;
+    private double balance;
     
-    public Account(String titular, double saldo) {
+    public Account(String owner, double balance) {
 	super();
-	this.titular = titular;
-	this.saldo = saldo;
+	this.owner = owner;
+	this.balance = balance;
     }
-    public String getTitular() {
-        return titular;
+    public String getOwner() {
+        return owner;
     }
-    public void setTitular(String titular) {
-        this.titular = titular;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
-    public double getSaldo() {
-        return saldo;
+    public double getBalance() {
+        return balance;
     }
     public void setValue(double value) {
-        this.saldo = value;
+        this.balance = value;
     }
 }
