@@ -1,21 +1,21 @@
 package com.learning.pattern.chain.desconto.impl;
 
-import com.learning.pattern.chain.desconto.Desconto;
+import com.learning.pattern.chain.desconto.Discount;
 import com.learning.pattern.chain.desconto.models.PriceEstimate;
 
-public class DescontoPorMaisDeCincoItens implements Desconto{
+public class DescontoPorMaisDeCincoItens implements Discount {
     
-    private Desconto proximo;
+    private Discount proximo;
 
-    public double desconta(PriceEstimate priceEstimate) {
+    public double calculateDiscount(PriceEstimate priceEstimate) {
 	if(priceEstimate.getItens().size() > 5){
 	    return priceEstimate.getPrice() * 0.1;
 	}
-	return proximo.desconta(priceEstimate);
+	return proximo.calculateDiscount(priceEstimate);
     }
 
-    public void setDesconto(Desconto proximo) {
-	this.proximo = proximo;
+    public void setDiscount(Discount next) {
+	this.proximo = next;
     }
 
 }
