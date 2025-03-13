@@ -6,7 +6,7 @@ import com.learning.pattern.chain.conta.models.Request;
 import com.learning.pattern.chain.conta.resposta.Response;
 import com.learning.pattern.chain.conta.resposta.impl.ErrorResponse;
 import com.learning.pattern.chain.conta.resposta.impl.CsvResponse;
-import com.learning.pattern.chain.conta.resposta.impl.RespostaEmPorcento;
+import com.learning.pattern.chain.conta.resposta.impl.PercentResponse;
 import com.learning.pattern.chain.conta.resposta.impl.RespostaEmXml;
 
 public class ContaController {
@@ -14,7 +14,7 @@ public class ContaController {
     public void imprimeConta(Format format, Account account){
 	
 	Response erro = new ErrorResponse();
-	Response porcento = new RespostaEmPorcento(erro);
+	Response porcento = new PercentResponse(erro);
 	Response csv = new CsvResponse(porcento);
 	Response xml = new RespostaEmXml(csv);
 	
