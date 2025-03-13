@@ -1,8 +1,8 @@
 package com.learning.pattern.chain.desconto.controllers;
 
 import com.learning.pattern.chain.desconto.Discount;
-import com.learning.pattern.chain.desconto.impl.DescontoPorMaisDeCincoItens;
-import com.learning.pattern.chain.desconto.impl.DescontoPorMaisDeQuinhentosReais;
+import com.learning.pattern.chain.desconto.impl.MoreThanFiveItemsDiscount;
+import com.learning.pattern.chain.desconto.impl.MoreThanFiveHundredDollarsDiscount;
 import com.learning.pattern.chain.desconto.impl.BundlingDiscount;
 import com.learning.pattern.chain.desconto.impl.NoDiscount;
 import com.learning.pattern.chain.desconto.models.PriceEstimate;
@@ -10,8 +10,8 @@ import com.learning.pattern.chain.desconto.models.PriceEstimate;
 public class CalculadorDeDescontos {
 
     public double calcula(PriceEstimate priceEstimate) {
-	Discount d1 = new DescontoPorMaisDeCincoItens();
-	Discount d2 = new DescontoPorMaisDeQuinhentosReais();
+	Discount d1 = new MoreThanFiveItemsDiscount();
+	Discount d2 = new MoreThanFiveHundredDollarsDiscount();
 	Discount d3 = new BundlingDiscount();
 	Discount d4 = new NoDiscount();
 
