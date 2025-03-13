@@ -1,9 +1,9 @@
-package com.learning.pattern.chain.conta.controllers;
+package com.learning.pattern.chain.account.controllers;
 
 import org.testng.annotations.Test;
 
-import com.learning.pattern.chain.conta.models.Account;
-import com.learning.pattern.chain.conta.models.Format;
+import com.learning.pattern.chain.account.models.Account;
+import com.learning.pattern.chain.account.models.Format;
 
 public class AccountControllerTest {
 

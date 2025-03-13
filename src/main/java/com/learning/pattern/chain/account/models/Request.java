@@ -1,4 +1,4 @@
-package com.learning.pattern.chain.conta.models;
+package com.learning.pattern.chain.account.models;
 
 public class Request {
 

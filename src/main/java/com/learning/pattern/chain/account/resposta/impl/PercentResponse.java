@@ -1,9 +1,9 @@
-package com.learning.pattern.chain.conta.resposta.impl;
+package com.learning.pattern.chain.account.resposta.impl;
 
-import com.learning.pattern.chain.conta.models.Account;
-import com.learning.pattern.chain.conta.models.Format;
-import com.learning.pattern.chain.conta.models.Request;
-import com.learning.pattern.chain.conta.resposta.Response;
+import com.learning.pattern.chain.account.models.Account;
+import com.learning.pattern.chain.account.models.Format;
+import com.learning.pattern.chain.account.models.Request;
+import com.learning.pattern.chain.account.resposta.Response;
 
 public class PercentResponse implements Response {
 
