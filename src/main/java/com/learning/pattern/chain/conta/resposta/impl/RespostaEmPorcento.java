@@ -1,6 +1,6 @@
 package com.learning.pattern.chain.conta.resposta.impl;
 
-import com.learning.pattern.chain.conta.models.Conta;
+import com.learning.pattern.chain.conta.models.Account;
 import com.learning.pattern.chain.conta.models.Format;
 import com.learning.pattern.chain.conta.models.Request;
 import com.learning.pattern.chain.conta.resposta.Resposta;
@@ -15,11 +15,11 @@ public class RespostaEmPorcento implements Resposta{
     }
 
     @Override
-    public void responde(Request request, Conta conta) {
+    public void responde(Request request, Account account) {
 	if(request.getFormat().equals(Format.PERCENT)){
-	    System.out.println(conta.getTitular() + "%" + conta.getSaldo());
+	    System.out.println(account.getTitular() + "%" + account.getSaldo());
 	}else{
-	    outraResposta.responde(request, conta);
+	    outraResposta.responde(request, account);
 	}
     }
 }

@@ -1,11 +1,11 @@
 package com.learning.pattern.chain.conta.models;
 
-public class Conta {
+public class Account {
 
     private String titular;
     private double saldo;
     
-    public Conta(String titular, double saldo) {
+    public Account(String titular, double saldo) {
 	super();
 	this.titular = titular;
 	this.saldo = saldo;
