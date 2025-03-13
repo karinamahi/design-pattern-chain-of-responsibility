@@ -9,22 +9,22 @@ public class AccountControllerTest {
 
     @Test
     public void deveImprimirXml() {
-        ContaController controller = new ContaController();
+        AccountController controller = new AccountController();
         Account account = new Account("Karina", 1.0);
-        controller.imprimeConta(Format.XML, account);
+        controller.printAccount(Format.XML, account);
     }
 
     @Test
     public void deveImprimirCsv() {
-        ContaController controller = new ContaController();
+        AccountController controller = new AccountController();
         Account account = new Account("Karina", 1.0);
-        controller.imprimeConta(Format.CSV, account);
+        controller.printAccount(Format.CSV, account);
     }
 
     @Test
     public void deveImprimirPorcento() {
-        ContaController controller = new ContaController();
+        AccountController controller = new AccountController();
         Account account = new Account("Karina", 1.0);
-        controller.imprimeConta(Format.PERCENT, account);
+        controller.printAccount(Format.PERCENT, account);
     }
 }

@@ -9,17 +9,16 @@ import com.learning.pattern.chain.conta.resposta.impl.CsvResponse;
 import com.learning.pattern.chain.conta.resposta.impl.PercentResponse;
 import com.learning.pattern.chain.conta.resposta.impl.XmlResponse;
 
-public class ContaController {
-    
-    public void imprimeConta(Format format, Account account){
-	
-	Response erro = new ErrorResponse();
-	Response porcento = new PercentResponse(erro);
-	Response csv = new CsvResponse(porcento);
-	Response xml = new XmlResponse(csv);
-	
-	Request request = new Request(format);
-	xml.reply(request, account);
-    }
+public class AccountController {
 
+    public void printAccount(Format format, Account account) {
+
+        Response errorResponse = new ErrorResponse();
+        Response percentResponse = new PercentResponse(errorResponse);
+        Response csvResponse = new CsvResponse(percentResponse);
+        Response xmlResponse = new XmlResponse(csvResponse);
+
+        Request request = new Request(format);
+        xmlResponse.reply(request, account);
+    }
 }
