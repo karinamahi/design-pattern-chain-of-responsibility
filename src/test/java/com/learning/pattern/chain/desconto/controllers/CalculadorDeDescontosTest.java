@@ -19,11 +19,11 @@ public class CalculadorDeDescontosTest {
     @Test
     public void deveCalcularDesconto() {
         PriceEstimate priceEstimate = new PriceEstimate(500.0);
-        priceEstimate.addItem(new Item("caneta", 250.0));
-        priceEstimate.addItem(new Item("livro", 250.0));
-        double desconto = this.calculador.calcula(priceEstimate);
-        Assert.assertEquals(desconto, 0.0);
-        System.out.println("Desconto: " + desconto);
+        priceEstimate.addItem(new Item("pen", 250.0));
+        priceEstimate.addItem(new Item("book", 250.0));
+        double discount = this.calculador.calcula(priceEstimate);
+        Assert.assertEquals(discount, 0.0);
+        System.out.println("Discount: " + discount);
     }
 
     @Test
@@ -53,10 +53,10 @@ public class CalculadorDeDescontosTest {
     @Test
     public void deveCalcularDescontoPorVendaCasada() {
         PriceEstimate priceEstimate = new PriceEstimate(500.0);
-        priceEstimate.addItem(new Item("caneta", 10.0));
-        priceEstimate.addItem(new Item("lapis", 10.0));
-        double desconto = this.calculador.calcula(priceEstimate);
-        System.out.println("Desconto: " + desconto);
-        Assert.assertTrue(desconto > 0);
+        priceEstimate.addItem(new Item("pen", 10.0));
+        priceEstimate.addItem(new Item("pencil", 10.0));
+        double discount = this.calculador.calcula(priceEstimate);
+        System.out.println("Desconto: " + discount);
+        Assert.assertTrue(discount > 0);
     }
 }
