@@ -2,12 +2,12 @@ package com.learning.pattern.chain.conta.resposta.impl;
 
 import com.learning.pattern.chain.conta.models.Account;
 import com.learning.pattern.chain.conta.models.Request;
-import com.learning.pattern.chain.conta.resposta.Resposta;
+import com.learning.pattern.chain.conta.resposta.Response;
 
-public class RespostaDeErro implements Resposta {
+public class RespostaDeErro implements Response {
 
     @Override
-    public void responde(Request request, Account account) {
+    public void reply(Request request, Account account) {
 	System.out.println("Não foi possível imprimir a conta.");
     }
 

@@ -3,7 +3,7 @@ package com.learning.pattern.chain.conta.resposta;
 import com.learning.pattern.chain.conta.models.Account;
 import com.learning.pattern.chain.conta.models.Request;
 
-public interface Resposta {
+public interface Response {
    
-    void responde(Request request, Account account);
+    void reply(Request request, Account account);
 }
