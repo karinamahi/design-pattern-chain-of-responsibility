@@ -1,11 +1,11 @@
-package com.learning.pattern.chain.desconto.impl;
+package com.learning.pattern.chain.discount.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.learning.pattern.chain.desconto.Discount;
-import com.learning.pattern.chain.desconto.models.Item;
-import com.learning.pattern.chain.desconto.models.PriceEstimate;
+import com.learning.pattern.chain.discount.Discount;
+import com.learning.pattern.chain.discount.models.Item;
+import com.learning.pattern.chain.discount.models.PriceEstimate;
 
 public class BundlingDiscount implements Discount {
 

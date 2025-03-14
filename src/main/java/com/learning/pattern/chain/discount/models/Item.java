@@ -1,4 +1,4 @@
-package com.learning.pattern.chain.desconto.models;
+package com.learning.pattern.chain.discount.models;
 
 public class Item {
 

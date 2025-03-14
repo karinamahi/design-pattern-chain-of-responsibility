@@ -1,6 +1,6 @@
-package com.learning.pattern.chain.desconto;
+package com.learning.pattern.chain.discount;
 
-import com.learning.pattern.chain.desconto.models.PriceEstimate;
+import com.learning.pattern.chain.discount.models.PriceEstimate;
 
 public interface Discount {
 

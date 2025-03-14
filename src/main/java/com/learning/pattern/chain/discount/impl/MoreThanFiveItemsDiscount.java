@@ -1,7 +1,7 @@
-package com.learning.pattern.chain.desconto.impl;
+package com.learning.pattern.chain.discount.impl;
 
-import com.learning.pattern.chain.desconto.Discount;
-import com.learning.pattern.chain.desconto.models.PriceEstimate;
+import com.learning.pattern.chain.discount.Discount;
+import com.learning.pattern.chain.discount.models.PriceEstimate;
 
 public class MoreThanFiveItemsDiscount implements Discount {
 

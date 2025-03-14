@@ -8,21 +8,21 @@ import com.learning.pattern.chain.account.models.Format;
 public class AccountControllerTest {
 
     @Test
-    public void deveImprimirXml() {
+    public void printXmlTest() {
         AccountController controller = new AccountController();
         Account account = new Account("Karina", 1.0);
         controller.printAccount(Format.XML, account);
     }
 
     @Test
-    public void deveImprimirCsv() {
+    public void printCsvTest() {
         AccountController controller = new AccountController();
         Account account = new Account("Karina", 1.0);
         controller.printAccount(Format.CSV, account);
     }
 
     @Test
-    public void deveImprimirPorcento() {
+    public void printPercentTest() {
         AccountController controller = new AccountController();
         Account account = new Account("Karina", 1.0);
         controller.printAccount(Format.PERCENT, account);

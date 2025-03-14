@@ -1,4 +1,4 @@
-package com.learning.pattern.chain.desconto.models;
+package com.learning.pattern.chain.discount.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
