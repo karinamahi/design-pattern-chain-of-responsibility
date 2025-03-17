@@ -76,7 +76,7 @@ public interface Discount {
 }
 ```
 
-The next step is to adjust the implementations.Here is one example:
+The next step is to adjust the implementations. Here is one example:
 ```java
 public class MoreThanFiveItemsDiscount implements Discount {
 
