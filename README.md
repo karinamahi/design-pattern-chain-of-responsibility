@@ -148,3 +148,130 @@ public class CheckoutService {
     }
     ...
 ```
+
+### Creating a generic and reusable Chain of Responsibility structure
+
+It may be interesting to create a reusable structure and a common library for our projects. This can be implemented in various ways, here is one example.
+
+First, I created defined a generic `Handler` that processes an object of type `Exchange`. The `Exchange` class encapsulate a generic `data`, and can include other useful features for the data processing. In this example, we use a `stop` flag to help the processor halt the execution.
+
+```java
+public interface Handler<T> {
+    
+    void handle(Exchange<T> exchange) throws Exception;
+}
+
+public class Exchange<T> {
+
+    private T data;
+    private boolean stop = false;
+
+    public Exchange(T data) {
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public boolean shouldStop() {
+        return stop;
+    }
+
+    public void stopProcessing() {
+        this.stop = true;
+    }
+}
+```
+
+The, I created a generic chain processor that hold all the handlers and is responsible for execute them.
+
+```java
+public class ChainProcessor<T> {
+    
+    private final List<Handler<T>> handlers;
+
+    public ChainProcessor(List<Handler<T>> handlers) {
+        this.handlers = handlers;
+    }
+
+    public void process(Exchange<T> exchange) {
+        for (Handler<T> handler : handlers) {
+            if (exchange.shouldStop()) {
+                System.out.println("Processing stopped due to an error.");
+                break;
+            }
+
+            try {
+                handler.handle(exchange);
+            } catch (Exception e) {
+                System.out.println("Error in handler: " + e.getMessage());
+                exchange.stopProcessing(); // Stop further processing
+            }
+        }
+    }
+}
+```
+Now, our reusable chain library is ready to use. We just need to implement the handlers according to the desired rules and instantiate a processor to execute them. So, let's test it!
+
+```java
+// handlers
+public class PrintDataHandler implements Handler {
+    @Override
+    public void handle(Exchange exchange) {
+        System.out.println("Printing data " + exchange.getData().toString());
+    }
+}
+
+public class SayHelloHandler implements Handler {
+
+    @Override
+    public void handle(Exchange exchange) throws Exception {
+        System.out.println("Hello " + exchange.getData().toString());
+    }
+}
+
+public class SayGoodByeHandler implements Handler {
+
+    @Override
+    public void handle(Exchange exchange) throws Exception {
+        System.out.println("Good bye " + exchange.getData().toString());
+    }
+}
+
+public class ErrorExampleHandler implements Handler {
+    @Override
+    public void handle(Exchange exchange) throws Exception {
+        System.out.println("Oops");
+        exchange.stopProcessing();
+        throw new Exception("Oops Exception");
+    }
+}
+
+// processor
+    @Test
+    public void processTest() {
+
+        List handlers = List.of(new PrintDataHandler(),
+                new SayHelloHandler(),
+                new ErrorExampleHandler(),
+                new SayGoodByeHandler());
+
+        ChainProcessor processor = new ChainProcessor<>(handlers);
+        processor.process(new Exchange("World"));
+    }
+    
+```
+In this test, I'm simulating an error, and the chain processing stops as expected:
+
+```text
+Printing data World
+Hello World
+Oops
+Error in handler: Oops Exception
+Processing stopped due to an error.
+```
