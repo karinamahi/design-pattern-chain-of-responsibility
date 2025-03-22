@@ -114,3 +114,37 @@ public class DiscountCalculator {
 After running the tests again, everything worked as expected.
 
 This way, we have a cleaner code, and the handlers does not have the responsibility of calling the next handler.
+
+## Checkout Example
+
+I created a simplified version of a real-world checkout process without using Chain of Responsibility pattern. This way, we will have both implementations to compare.
+
+Our checkout process will simulate the following steps:
+- Stock validation
+- Payment processing
+- Order creation
+- Post-checkout actions (sending a email notifying the customer)
+
+```java
+public class CheckoutService {
+
+    public CheckoutResponse processCheckout(CheckoutRequest request) {
+
+        // Step 1: Validate cart items and stock availability
+        if (!validateStock(request)) {
+            return new CheckoutResponse("error", "Stock unavailable for some items!");
+        }
+
+        // Step 2: Process payment
+        processPayment(request.getPaymentDetails());
+
+        // Step 3: Create order
+        String orderId = createOrder(request);
+
+        // Step 4: Send order confirmation (simulated)
+        sendOrderConfirmation(request.getUserId(), orderId);
+
+        return new CheckoutResponse("success", "Order placed successfully! Order ID: " + orderId);
+    }
+    ...
+```
