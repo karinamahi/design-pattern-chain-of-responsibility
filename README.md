@@ -153,7 +153,7 @@ public class CheckoutService {
 
 It may be interesting to create a reusable structure and a common library for our projects. This can be implemented in various ways, here is one example.
 
-First, I created defined a generic `Handler` that processes an object of type `Exchange`. The `Exchange` class encapsulate a generic `data`, and can include other useful features for the data processing. In this example, we use a `stop` flag to help the processor halt the execution.
+First, I defined a generic `Handler` that processes an object of type `Exchange`. The `Exchange` class encapsulate a generic `data`, and can include other useful features for the data processing. In this example, we use a `stop` flag to help the processor halt the execution.
 
 ```java
 public interface Handler<T> {
