@@ -280,7 +280,7 @@ Processing stopped due to an error.
 
 First, I duplicated the previous checkout code, including the tests, so we have both implementations for reference.
 
-For the new implementation, I created the impl folder, where I am adding the Handler implementations. Now, the package structure looks like this:
+For the new implementation, I created the `impl` folder, where I am adding the `Handler` implementations. Now, the package structure looks like this:
 ```text
 checkout
 ├── chain
@@ -293,6 +293,19 @@ checkout
 │   ├── service
 │   ├── web
 ```
+
+I also created a wrapper for the data that will be used during the processing:
+```java
+public class CheckoutExchangeData {
+
+    private CheckoutRequest request;
+    private CheckoutResponse response;
+    private boolean stockValid;
+    private String orderID;
+    
+    // constructor and getters and setters
+```
+
 Then, I created the handlers and moved the implementation from the service to the new handlers. Here is an example:
 ```java
 public class StockValidationHandler implements Handler<CheckoutExchangeData> {
