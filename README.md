@@ -114,3 +114,240 @@ public class DiscountCalculator {
 After running the tests again, everything worked as expected.
 
 This way, we have a cleaner code, and the handlers does not have the responsibility of calling the next handler.
+
+## Checkout Example
+
+I created a simplified version of a real-world checkout process without using Chain of Responsibility pattern. This way, we will have both implementations to compare.
+
+Our checkout process will simulate the following steps:
+- Stock validation
+- Payment processing
+- Order creation
+- Post-checkout actions (sending a email notifying the customer)
+
+```java
+public class CheckoutService {
+
+    public CheckoutResponse processCheckout(CheckoutRequest request) {
+
+        // Step 1: Validate cart items and stock availability
+        if (!validateStock(request)) {
+            return new CheckoutResponse("error", "Stock unavailable for some items!");
+        }
+
+        // Step 2: Process payment
+        processPayment(request.getPaymentDetails());
+
+        // Step 3: Create order
+        String orderId = createOrder(request);
+
+        // Step 4: Send order confirmation (simulated)
+        sendOrderConfirmation(request.getUserId(), orderId);
+
+        return new CheckoutResponse("success", "Order placed successfully! Order ID: " + orderId);
+    }
+    ...
+```
+
+### Creating a generic and reusable Chain of Responsibility structure
+
+It may be interesting to create a reusable structure and a common library for our projects. This can be implemented in various ways, here is one example.
+
+First, I defined a generic `Handler` that processes an object of type `Exchange`. The `Exchange` class encapsulate a generic `data`, and can include other useful features for the data processing. In this example, we use a `stop` flag to help the processor halt the execution.
+
+```java
+public interface Handler<T> {
+    
+    void handle(Exchange<T> exchange) throws Exception;
+}
+
+public class Exchange<T> {
+
+    private T data;
+    private boolean stop = false;
+
+    public Exchange(T data) {
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public boolean shouldStop() {
+        return stop;
+    }
+
+    public void stopProcessing() {
+        this.stop = true;
+    }
+}
+```
+
+The, I created a generic chain processor that hold all the handlers and is responsible for execute them.
+
+```java
+public class ChainProcessor<T> {
+    
+    private final List<Handler<T>> handlers;
+
+    public ChainProcessor(List<Handler<T>> handlers) {
+        this.handlers = handlers;
+    }
+
+    public void process(Exchange<T> exchange) {
+        for (Handler<T> handler : handlers) {
+            if (exchange.shouldStop()) {
+                System.out.println("Processing stopped due to an error.");
+                break;
+            }
+
+            try {
+                handler.handle(exchange);
+            } catch (Exception e) {
+                System.out.println("Error in handler: " + e.getMessage());
+                exchange.stopProcessing(); // Stop further processing
+            }
+        }
+    }
+}
+```
+Now, our reusable chain library is ready to use. We just need to implement the handlers according to the desired rules and instantiate a processor to execute them. So, let's test it!
+
+```java
+// handlers
+public class PrintDataHandler implements Handler {
+    @Override
+    public void handle(Exchange exchange) {
+        System.out.println("Printing data " + exchange.getData().toString());
+    }
+}
+
+public class SayHelloHandler implements Handler {
+
+    @Override
+    public void handle(Exchange exchange) throws Exception {
+        System.out.println("Hello " + exchange.getData().toString());
+    }
+}
+
+public class SayGoodByeHandler implements Handler {
+
+    @Override
+    public void handle(Exchange exchange) throws Exception {
+        System.out.println("Good bye " + exchange.getData().toString());
+    }
+}
+
+public class ErrorExampleHandler implements Handler {
+    @Override
+    public void handle(Exchange exchange) throws Exception {
+        System.out.println("Oops");
+        exchange.stopProcessing();
+        throw new Exception("Oops Exception");
+    }
+}
+
+// processor
+    @Test
+    public void processTest() {
+
+        List handlers = List.of(new PrintDataHandler(),
+                new SayHelloHandler(),
+                new ErrorExampleHandler(),
+                new SayGoodByeHandler());
+
+        ChainProcessor processor = new ChainProcessor<>(handlers);
+        processor.process(new Exchange("World"));
+    }
+    
+```
+In this test, I'm simulating an error, and the chain processing stops as expected:
+
+```text
+Printing data World
+Hello World
+Oops
+Error in handler: Oops Exception
+Processing stopped due to an error.
+```
+
+### Checkout processing using Chain of Responsibility
+
+First, I duplicated the previous checkout code, including the tests, so we have both implementations for reference.
+
+For the new implementation, I created the impl folder, where I am adding the Handler implementations. Now, the package structure looks like this:
+```text
+checkout
+├── chain
+│   ├── domain
+│   ├── impl
+│   ├── service
+│   ├── web
+├── nochain
+│   ├── domain
+│   ├── service
+│   ├── web
+```
+Then, I created the handlers and moved the implementation from the service to the new handlers. Here is an example:
+```java
+public class StockValidationHandler implements Handler<CheckoutExchangeData> {
+
+    @Override
+    public void handle(Exchange<CheckoutExchangeData> exchange) throws Exception {
+        // Simulating stock validation
+        System.out.println("[step 1] starting stock validation..");
+
+        try {
+            System.out.println(" - calling stock api.. ");
+        } catch (Exception ex) {
+            exchange.getData().setResponse(new CheckoutResponse("error", "Stock unavailable for some items!"));
+            exchange.stopProcessing();
+        }
+
+        System.out.println("[step 1] finishing stock validation..");
+    }
+}
+```
+The service looks like this now:
+```java
+public class CheckoutService {
+
+    public CheckoutResponse processCheckout(CheckoutRequest request) {
+
+        CheckoutExchangeData checkoutData = new CheckoutExchangeData(request);
+
+        List handlers = List.of(new StockValidationHandler(),
+                                new ProcessPaymentHandler(),
+                                new OrderCreationHandler(),
+                                new OrderConfirmationHandler());
+
+        ChainProcessor processor = new ChainProcessor<>(handlers);
+        processor.process(new Exchange(checkoutData));
+
+        return checkoutData.getResponse();
+    }
+}
+```
+Running the test, we have the same result:
+```
+[step 1] starting stock validation..
+ - calling stock api.. 
+[step 1] finishing stock validation..
+[step 2] starting payment processing..
+ - calling payment api.. 
+[step 2] async process - payment will be processed..
+[step 3] starting order creation..
+ - calling order api.. 
+[step 3] finishing order creation..
+[step 4] starting order confirmation process..
+ - calling user notification api.. 
+[step 4] async process - user notification will be processed..
+```
+
+I believe that the main benefit of this approach is that the code is easier to test and the responsibilities clearly defined.
+
