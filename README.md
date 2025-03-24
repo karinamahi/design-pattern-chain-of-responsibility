@@ -275,3 +275,79 @@ Oops
 Error in handler: Oops Exception
 Processing stopped due to an error.
 ```
+
+### Checkout processing using Chain of Responsibility
+
+First, I duplicated the previous checkout code, including the tests, so we have both implementations for reference.
+
+For the new implementation, I created the impl folder, where I am adding the Handler implementations. Now, the package structure looks like this:
+```text
+checkout
+├── chain
+│   ├── domain
+│   ├── impl
+│   ├── service
+│   ├── web
+├── nochain
+│   ├── domain
+│   ├── service
+│   ├── web
+```
+Then, I created the handlers and moved the implementation from the service to the new handlers. Here is an example:
+```java
+public class StockValidationHandler implements Handler<CheckoutExchangeData> {
+
+    @Override
+    public void handle(Exchange<CheckoutExchangeData> exchange) throws Exception {
+        // Simulating stock validation
+        System.out.println("[step 1] starting stock validation..");
+
+        try {
+            System.out.println(" - calling stock api.. ");
+        } catch (Exception ex) {
+            exchange.getData().setResponse(new CheckoutResponse("error", "Stock unavailable for some items!"));
+            exchange.stopProcessing();
+        }
+
+        System.out.println("[step 1] finishing stock validation..");
+    }
+}
+```
+The service looks like this now:
+```java
+public class CheckoutService {
+
+    public CheckoutResponse processCheckout(CheckoutRequest request) {
+
+        CheckoutExchangeData checkoutData = new CheckoutExchangeData(request);
+
+        List handlers = List.of(new StockValidationHandler(),
+                                new ProcessPaymentHandler(),
+                                new OrderCreationHandler(),
+                                new OrderConfirmationHandler());
+
+        ChainProcessor processor = new ChainProcessor<>(handlers);
+        processor.process(new Exchange(checkoutData));
+
+        return checkoutData.getResponse();
+    }
+}
+```
+Running the test, we have the same result:
+```
+[step 1] starting stock validation..
+ - calling stock api.. 
+[step 1] finishing stock validation..
+[step 2] starting payment processing..
+ - calling payment api.. 
+[step 2] async process - payment will be processed..
+[step 3] starting order creation..
+ - calling order api.. 
+[step 3] finishing order creation..
+[step 4] starting order confirmation process..
+ - calling user notification api.. 
+[step 4] async process - user notification will be processed..
+```
+
+I believe that the main benefit of this approach is that the code is easier to test and the responsibilities clearly defined.
+
