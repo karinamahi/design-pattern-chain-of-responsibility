@@ -364,3 +364,63 @@ Running the test, we have the same result:
 
 I believe that the main benefit of this approach is that the code is easier to test and the responsibilities clearly defined.
 
+### Improve the reusable chain structure
+
+Once we already have a reusable chain, we can add new features that will benefit all implementations. In the following example, we will generate (print in the logs) a final report on the execution of the handlers, including the handler's name and its execution time.
+
+Now the processor is like this:
+
+```java
+public class ChainProcessor<T> {
+
+    private final List<Handler<T>> handlers;
+    private final List<String> logs = new ArrayList<>();
+
+    public ChainProcessor(List<Handler<T>> handlers) {
+        this.handlers = handlers;
+    }
+
+    public void process(Exchange<T> exchange) {
+        for (Handler<T> handler : handlers) {
+            Instant start = Instant.now();
+            int stepNumber = handlers.indexOf(handler);
+            String handlerName = handler.getClass().getSimpleName();
+            if (exchange.shouldStop()) {
+                System.out.println("Processing stopped due to an error.");
+                logs.add(generateLogMessage(stepNumber, "SKIPPED", handlerName, start));
+                continue;
+            }
+
+            try {
+                handler.handle(exchange);
+                logs.add(generateLogMessage(stepNumber, "EXECUTED", handlerName, start));
+            } catch (Exception e) {
+                System.out.println("Error in handler: " + e.getMessage());
+                exchange.stopProcessing(); // Stop further processing
+                logs.add(generateLogMessage(stepNumber, "ERROR", handlerName, start));
+            }
+        }
+        printReport();
+    }
+
+    private static String generateLogMessage(int stepNumber, String status, String handlerName, Instant start) {
+        return "[Step " + stepNumber + "][" + status + "] "+ handlerName + " - Execution time: " + Duration.between(start, Instant.now()).toMillis() + " ms.";
+    }
+
+    private void printReport() {
+        System.out.println("\n=================== Execution Report ====================");
+        logs.forEach(System.out::println);
+        System.out.println("=========================================================");
+    }
+}
+```
+For tests purposes, the `ProcessPaymentHandler` is throwing an exception. When we run the test, we have the following output:
+```text
+=================== Execution Report ====================
+[Step 0][EXECUTED] StockValidationHandler - Execution time: 7 ms.
+[Step 1][ERROR] ProcessPaymentHandler - Execution time: 2 ms.
+[Step 2][SKIPPED] OrderCreationHandler - Execution time: 0 ms.
+[Step 3][SKIPPED] OrderConfirmationHandler - Execution time: 0 ms.
+=========================================================
+```
+This is just one idea to demonstrate how we can improve our chain library, but there's so much more we can do!

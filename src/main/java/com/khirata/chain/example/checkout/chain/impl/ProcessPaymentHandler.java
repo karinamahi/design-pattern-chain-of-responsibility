@@ -12,5 +12,6 @@ public class ProcessPaymentHandler implements Handler<CheckoutExchangeData> {
         System.out.println("[step 2] starting payment processing..");
         System.out.println(" - calling payment api.. ");
         System.out.println("[step 2] async process - payment will be processed..");
+        throw new Exception("Payment API unavailable.");
     }
 }
