@@ -7,11 +7,6 @@ public class CheckoutExchangeData {
     private boolean stockValid;
     private String orderID;
 
-    public CheckoutExchangeData(CheckoutRequest request, CheckoutResponse response) {
-        this.request = request;
-        this.response = response;
-    }
-
     public CheckoutExchangeData(CheckoutRequest request) {
         this.request = request;
     }
